@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:bitcoin_ticker/services/currency.dart';
+
 const List<String> currenciesList = [
   'AUD',
   'BRL',
@@ -28,4 +32,16 @@ const List<String> cryptoList = [
   'LTC',
 ];
 
-class CoinData {}
+class CoinData {
+  CurrencyModel currency = CurrencyModel();
+  Map<String, double> currentCurrencies = {};
+
+  Future<void> getCoinData(String selectedCurrency) async {
+    for (String crypto in cryptoList) {
+      var coinData = await currency.get3CryptoCurrencies(crypto, selectedCurrency);
+      currentCurrencies[crypto] = coinData['rate'];
+      print(coinData);
+      sleep(Duration(microseconds: 200));
+    }
+  }
+}
